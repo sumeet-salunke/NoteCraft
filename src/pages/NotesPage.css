@@ -97,3 +97,48 @@
     padding: 18px;
   }
 }
+
+.notes-page__search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  color: #1e293b;
+  background: #fff;
+}
+
+.notes-page__search:focus {
+  outline: 2px solid #818cf8;
+  outline-offset: 1px;
+  border-color: #6366f1;
+}
+.notes-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 12px 0;
+}
+
+.notes-page__pagination button,
+.notes-page__pagination select {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+}
+
+.notes-page__pagination button {
+  cursor: pointer;
+}
+
+.notes-page__pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

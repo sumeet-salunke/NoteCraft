@@ -5,6 +5,7 @@ export const initialNotes : Note[] =[
     id:'1',
     title: 'React + TypeScript',
     content: '# React + Typescript \n\n Learn components, props, and state.',
+    createdAt: '2026-10-20',
     updatedAt: '2026-10-22',
     isFavorite: true
   },
@@ -12,6 +13,7 @@ export const initialNotes : Note[] =[
     id: '2',
     title: 'Project Ideas',
     content: '#Project Ideas \n\n -MarkDown notes editor\n -Personal Dashboard',
+     createdAt: '2026-10-20',
     updatedAt: '2026-10-21',
     isFavorite: false,
   },
@@ -19,6 +21,7 @@ export const initialNotes : Note[] =[
     id: '3',
     title: 'Learning Goals',
     content: '# Learning Goals\n\nPractice TypeScript and build useful projects.',
+     createdAt: '2026-10-20',
     updatedAt: '2026-10-20',
     isFavorite: false,
   },

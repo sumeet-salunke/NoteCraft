@@ -9,12 +9,7 @@ const Header = ({ title }: HeaderProps) => {
     <header className="page-header">
       <h1 className="page-header__title">{title}</h1>
 
-      <input
-        className="page-header__search"
-        type="search"
-        placeholder="Search notes..."
-        aria-label="Search notes"
-      />
+    
     </header>
   )
 }
