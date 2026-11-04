@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { noteSchema, type NoteFormValues } from "../../validations/note.schema";
 import MarkdownPreview from "./MarkdownPreview";
 import "./NoteEditor.css";
@@ -12,8 +13,14 @@ interface NoteEditorProps {
   onCancel: () => void;
 }
 
-const NoteEditor = ({ initialValues, onSave, onCancel }: NoteEditorProps) => {
-  const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
+type EditorMode = "edit" | "preview" | "split";
+
+const NoteEditor = ({
+  initialValues,
+  onSave,
+  onCancel,
+}: NoteEditorProps) => {
+  const [activeTab, setActiveTab] = useState<EditorMode>("edit");
 
   const {
     register,
@@ -42,7 +49,9 @@ const NoteEditor = ({ initialValues, onSave, onCancel }: NoteEditorProps) => {
       className="note-editor"
       noValidate
     >
+      {/* Note Title */}
       <label htmlFor="note-title">Title</label>
+
       <input
         id="note-title"
         type="text"
@@ -51,47 +60,66 @@ const NoteEditor = ({ initialValues, onSave, onCancel }: NoteEditorProps) => {
         {...register("title")}
         aria-invalid={Boolean(errors.title)}
       />
+
       {errors.title && (
-        <p className="note-editor__error">{errors.title.message}</p>
+        <p className="note-editor__error">
+          {errors.title.message}
+        </p>
       )}
 
+      {/* Editor Tabs */}
       <div className="note-editor__tabs">
-        <button
-          type="button"
-          className={activeTab === "edit" ? "active" : ""}
-          onClick={() => setActiveTab("edit")}
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          className={activeTab === "preview" ? "active" : ""}
-          onClick={() => setActiveTab("preview")}
-        >
-          Preview
-        </button>
+        {(["edit", "preview", "split"] as const).map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            className={activeTab === tab ? "active" : ""}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
       </div>
 
-      {activeTab === "edit" ? (
-        <>
-          <label htmlFor="note-content">Content (Markdown supported)</label>
-          <textarea
-            id="note-content"
-            rows={14}
-            maxLength={20000}
-            placeholder="Write your note here..."
-            {...register("content")}
-            aria-invalid={Boolean(errors.content)}
-          />
-          {errors.content && (
-            <p className="note-editor__error">{errors.content.message}</p>
-          )}
-        </>
-      ) : (
-        <MarkdownPreview content={content} />
-      )}
+      {/* Editor Workspace */}
+      <div
+        className={`note-editor__workspace note-editor__workspace--${activeTab}`}
+      >
+        {/* Edit Panel */}
+        {activeTab !== "preview" && (
+          <div className="note-editor__edit-panel">
+            <label htmlFor="note-content">
+              Content (Markdown supported)
+            </label>
 
+            <textarea
+              id="note-content"
+              rows={14}
+              maxLength={20000}
+              placeholder="Write your note here..."
+              {...register("content")}
+              aria-invalid={Boolean(errors.content)}
+            />
+
+            {errors.content && (
+              <p className="note-editor__error">
+                {errors.content.message}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Preview Panel */}
+        {activeTab !== "edit" && (
+          <div className="note-editor__preview-panel">
+            {activeTab === "split" && <h3>Live Preview</h3>}
+
+            <MarkdownPreview content={content || ""} />
+          </div>
+        )}
+      </div>
+
+      {/* Form Actions */}
       <div className="note-editor__actions">
         <button
           className="note-editor__cancel"
